@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SVChVS_Course_Project.Services;
 
 namespace SVChVS_Course_Project
 {
@@ -20,6 +21,8 @@ namespace SVChVS_Course_Project
         {
 
             services.AddControllersWithViews();
+            services.AddDbContext<CourseProjectContext>();
+            DependencyRegistrationService.RegistrateDependencies(services);
 
             services.AddSpaStaticFiles(configuration =>
             {
