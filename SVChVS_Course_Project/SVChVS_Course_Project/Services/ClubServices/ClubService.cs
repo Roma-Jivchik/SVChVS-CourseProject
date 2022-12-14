@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SVChVS_Course_Project.Models;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SVChVS_Course_Project.Services.ClubServices
 {
@@ -17,7 +18,7 @@ namespace SVChVS_Course_Project.Services.ClubServices
 
         public async Task<Club> Create(Club entity)
         {
-            entity.ID = Guid.NewGuid().ToString();
+            entity.Id = Guid.NewGuid().ToString();
 
             await courseProjectContext.Clubs.AddAsync(entity);
 
@@ -26,14 +27,23 @@ namespace SVChVS_Course_Project.Services.ClubServices
             return entity;
         }
 
-        public async Task<List<Club>> GetAllAsync()
+        public async Task Delete(string ID)
         {
-            return await courseProjectContext.Clubs.ToListAsync();
+            courseProjectContext.Clubs.Remove(await Get(ID));
+
+            await courseProjectContext.SaveChangesAsync();
         }
 
-        public async Task<Club> GetAsync(string ID)
+        public async Task<Club> Get(string ID)
         {
-            return await courseProjectContext.Clubs.FirstOrDefaultAsync(_ => _.ID == ID);
+            return await courseProjectContext.Clubs.FirstOrDefaultAsync(_ => _.Id == ID);
+        }
+
+        public async Task<List<Club>> GetAll()
+        {
+            return await courseProjectContext.Clubs
+                .OrderBy(_ => _.Name)
+                .ToListAsync();
         }
 
         public async Task<List<Club>> GetByLeagueAsync(string league)
@@ -44,32 +54,11 @@ namespace SVChVS_Course_Project.Services.ClubServices
                 .ToListAsync();
         }
 
-        public async Task<Club> GetByNameAsync(string name)
-        {
-            return await courseProjectContext.Clubs.FirstOrDefaultAsync(_ => _.Name == name);
-        }
-
-        public async Task<Club> GetByStadiumAsync(string stadium)
-        {
-            return await courseProjectContext.Clubs.FirstOrDefaultAsync(_ => _.Stadium == stadium);
-        }
-
-        public async Task Remove(string ID)
-        {
-            var forRemove = await GetAsync(ID);
-
-            courseProjectContext.Clubs.Remove(forRemove);
-
-            await courseProjectContext.SaveChangesAsync();
-        }
-
         public async Task<Club> Update(Club entity)
         {
-            await Remove(entity.ID);
+            await Delete(entity.Id);
 
             await Create(entity);
-
-            await courseProjectContext.SaveChangesAsync();
 
             return entity;
         }

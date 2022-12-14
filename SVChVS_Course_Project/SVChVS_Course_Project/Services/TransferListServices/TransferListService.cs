@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SVChVS_Course_Project.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace SVChVS_Course_Project.Services.TransferListServices
 
         public async Task<TransferList> Create(TransferList entity)
         {
-            entity.ID = Guid.NewGuid().ToString();
+            entity.Id = Guid.NewGuid().ToString();
 
             await courseProjectContext.TransferLists.AddAsync(entity);
 
@@ -26,48 +27,46 @@ namespace SVChVS_Course_Project.Services.TransferListServices
             return entity;
         }
 
-        public async Task<List<TransferList>> GetAllAsync()
+        public async Task Delete(string ID)
         {
-            return await courseProjectContext.TransferLists.ToListAsync();
-        }
-
-        public async Task<TransferList> GetAsync(string ID)
-        {
-            return await courseProjectContext.TransferLists.FirstOrDefaultAsync(_ => _.ID == ID);
-        }
-
-        public async Task<List<TransferList>> GetByTeamAsync(string league)
-        {
-            return await courseProjectContext.TransferLists
-                .Where(_ => _.FromTeam == league || _.ToTeam == league)
-                .OrderBy(_ => _.Price)
-                .ToListAsync();
-        }
-
-        public async Task<List<TransferList>> GetByLowerPriceAsync(double price)
-        {
-            return await courseProjectContext.TransferLists
-                .Where(_ => _.Price <= price)
-                .OrderBy(_ => _.Price)
-                .ToListAsync();
-        }
-
-        public async Task Remove(string ID)
-        {
-            var forRemove = await GetAsync(ID);
-
-            courseProjectContext.TransferLists.Remove(forRemove);
+            courseProjectContext.TransferLists.Remove(await Get(ID));
 
             await courseProjectContext.SaveChangesAsync();
+        }
+
+        public async Task<TransferList> Get(string ID)
+        {
+            return await courseProjectContext.TransferLists.FirstOrDefaultAsync(_ => _.Id == ID);
+        }
+
+        public async Task<List<TransferList>> GetAll()
+        {
+            return await courseProjectContext.TransferLists
+                .OrderBy(_ => _.Price)
+                .ToListAsync();
+        }
+
+        public async Task<List<TransferList>> GetByPlayerAsync(string playerName)
+        {
+            return await courseProjectContext.TransferLists
+                .Where(_ => _.PlayerName == playerName)
+                .OrderBy(_ => _.Price)
+                .ToListAsync();
+        }
+
+        public async Task<List<TransferList>> GetByTeamAsync(string team)
+        {
+            return await courseProjectContext.TransferLists
+                .Where(_ => _.FromTeam == team || _.ToTeam == team)
+                .OrderBy(_ => _.Price)
+                .ToListAsync();
         }
 
         public async Task<TransferList> Update(TransferList entity)
         {
-            await Remove(entity.ID);
+            await Delete(entity.Id);
 
             await Create(entity);
-
-            await courseProjectContext.SaveChangesAsync();
 
             return entity;
         }

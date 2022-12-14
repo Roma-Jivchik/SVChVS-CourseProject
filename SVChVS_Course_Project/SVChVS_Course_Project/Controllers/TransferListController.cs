@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SVChVS_Course_Project.Models;
 using SVChVS_Course_Project.Services.TransferListServices;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace SVChVS_Course_Project.Controllers
         {
             try
             {
-                var transferLists = await _transferListService.GetAllAsync();
+                var transferLists = await _transferListService.GetAll();
 
                 return Ok(transferLists);
             }
@@ -85,7 +86,7 @@ namespace SVChVS_Course_Project.Controllers
         {
             try
             {
-                await _transferListService.Remove(ID);
+                await _transferListService.Delete(ID);
 
                 return Ok(ID);
             }
@@ -96,13 +97,13 @@ namespace SVChVS_Course_Project.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/get-by-last-name")]
+        [Route("[controller]/get-by-team")]
         [ProducesResponseType(typeof(List<TransferList>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByLowerPriceAsync(double price)
+        public async Task<IActionResult> GetByPlayerAsync(string player)
         {
             try
             {
-                var transferLists = await _transferListService.GetByLowerPriceAsync(price);
+                var transferLists = await _transferListService.GetByPlayerAsync(player);
 
                 if (transferLists is null)
                 {

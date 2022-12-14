@@ -1,10 +1,10 @@
 ﻿#nullable disable
 
-namespace SVChVS_Course_Project
+namespace SVChVS_Course_Project.Models
 {
     public partial class Player
     {
-        public string ID { get; set; }
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Position { get; set; }

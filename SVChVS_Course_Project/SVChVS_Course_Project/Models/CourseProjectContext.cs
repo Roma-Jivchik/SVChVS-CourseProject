@@ -1,10 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace SVChVS_Course_Project
+namespace SVChVS_Course_Project.Models
 {
     public partial class CourseProjectContext : DbContext
     {
@@ -38,7 +36,7 @@ namespace SVChVS_Course_Project
             {
                 entity.ToTable("Club");
 
-                entity.Property(e => e.ID)
+                entity.Property(e => e.Id)
                     .HasMaxLength(200)
                     .HasColumnName("ID");
 
@@ -67,7 +65,7 @@ namespace SVChVS_Course_Project
             {
                 entity.ToTable("Match");
 
-                entity.Property(e => e.ID)
+                entity.Property(e => e.Id)
                     .HasMaxLength(200)
                     .HasColumnName("ID");
 
@@ -88,7 +86,7 @@ namespace SVChVS_Course_Project
             {
                 entity.ToTable("Player");
 
-                entity.Property(e => e.ID)
+                entity.Property(e => e.Id)
                     .HasMaxLength(200)
                     .HasColumnName("ID");
 
@@ -113,7 +111,7 @@ namespace SVChVS_Course_Project
             {
                 entity.ToTable("TransferList");
 
-                entity.Property(e => e.ID)
+                entity.Property(e => e.Id)
                     .HasMaxLength(200)
                     .HasColumnName("ID");
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SVChVS_Course_Project.Models;
 using SVChVS_Course_Project.Services.ClubServices;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace SVChVS_Course_Project.Controllers
         {
             try
             {
-                var clubs = await _clubService.GetAllAsync();
+                var clubs = await _clubService.GetAll();
 
                 return Ok(clubs);
             }
@@ -85,7 +86,7 @@ namespace SVChVS_Course_Project.Controllers
         {
             try
             {
-                await _clubService.Remove(ID);
+                await _clubService.Delete(ID);
 
                 return Ok(ID);
             }
@@ -96,53 +97,9 @@ namespace SVChVS_Course_Project.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/get-by-stadium")]
-        [ProducesResponseType(typeof(Club), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByStadiumAsync(string stadium)
-        {
-            try
-            {
-                var club = await _clubService.GetByStadiumAsync(stadium);
-
-                if (club is null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(club);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, $"{e.Message}");
-            }
-        }
-
-        [HttpGet]
-        [Route("[controller]/get-by-name")]
-        [ProducesResponseType(typeof(List<Club>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByNameAsync(string name)
-        {
-            try
-            {
-                var clubs = await _clubService.GetByNameAsync(name);
-
-                if (clubs is null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(clubs);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, $"{e.Message}");
-            }
-        }
-
-        [HttpGet]
         [Route("[controller]/get-by-league")]
         [ProducesResponseType(typeof(List<Club>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByLeagueAsync(string league)
+        public async Task<IActionResult> GetByLeague(string league)
         {
             try
             {

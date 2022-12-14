@@ -1,10 +1,10 @@
 ﻿#nullable disable
 
-namespace SVChVS_Course_Project
+namespace SVChVS_Course_Project.Models
 {
     public partial class Club
     {
-        public string ID { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string History { get; set; }

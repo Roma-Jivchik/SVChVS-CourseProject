@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SVChVS_Course_Project.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Match = SVChVS_Course_Project.Models.Match;
 
-namespace SVChVS_Course_Project.Services.MatchesServices
+namespace SVChVS_Course_Project.Services.MatchServices
 {
     public class MatchService : IMatchService
     {
@@ -17,7 +19,7 @@ namespace SVChVS_Course_Project.Services.MatchesServices
 
         public async Task<Match> Create(Match entity)
         {
-            entity.ID = Guid.NewGuid().ToString();
+            entity.Id = Guid.NewGuid().ToString();
 
             await courseProjectContext.Matches.AddAsync(entity);
 
@@ -26,48 +28,38 @@ namespace SVChVS_Course_Project.Services.MatchesServices
             return entity;
         }
 
-        public async Task<List<Match>> GetAllAsync()
+        public async Task Delete(string ID)
         {
-            return await courseProjectContext.Matches.ToListAsync();
-        }
-
-        public async Task<Match> GetAsync(string ID)
-        {
-            return await courseProjectContext.Matches.FirstOrDefaultAsync(_ => _.ID == ID);
-        }
-
-        public async Task<List<Match>> GetByTeamPlayedAsync(string league)
-        {
-            return await courseProjectContext.Matches
-                .Where(_ => _.FirstTeamPlayed == league || _.SecondTeamPlayed == league) 
-                .OrderBy(_ => _.Result)
-                .ToListAsync();
-        }
-
-        public async Task<List<Match>> GetByResultAsync(string league)
-        {
-            return await courseProjectContext.Matches
-                .Where(_ => _.Result == league)
-                .OrderBy(_ => _.Result)
-                .ToListAsync();
-        }
-
-        public async Task Remove(string ID)
-        {
-            var forRemove = await GetAsync(ID);
-
-            courseProjectContext.Matches.Remove(forRemove);
+            courseProjectContext.Matches.Remove(await Get(ID));
 
             await courseProjectContext.SaveChangesAsync();
+        }
+
+        public async Task<Match> Get(string ID)
+        {
+            return await courseProjectContext.Matches.FirstOrDefaultAsync(_ => _.Id == ID);
+        }
+
+        public async Task<List<Match>> GetAll()
+        {
+            return await courseProjectContext.Matches
+                .OrderBy(_ => _.Result)
+                .ToListAsync();
+        }
+
+        public async Task<List<Match>> GetByTeamPlayedAsync(string teamPlayed)
+        {
+            return await courseProjectContext.Matches
+                .Where(_ => _.FirstTeamPlayed == teamPlayed || _.SecondTeamPlayed == teamPlayed)
+                .OrderBy(_ => _.Result)
+                .ToListAsync();
         }
 
         public async Task<Match> Update(Match entity)
         {
-            await Remove(entity.ID);
+            await Delete(entity.Id);
 
             await Create(entity);
-
-            await courseProjectContext.SaveChangesAsync();
 
             return entity;
         }

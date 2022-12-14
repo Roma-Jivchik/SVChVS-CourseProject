@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SVChVS_Course_Project.Services.MatchesServices;
+using SVChVS_Course_Project.Models;
+using SVChVS_Course_Project.Services.MatchServices;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,11 +11,11 @@ namespace SVChVS_Course_Project.Controllers
     [ApiController]
     public class MatchController : ControllerBase
     {
-        private readonly IMatchService _matchService;
+        private readonly IMatchService _clubService;
 
-        public MatchController(IMatchService matchService)
+        public MatchController(IMatchService clubService)
         {
-            _matchService = matchService;
+            _clubService = clubService;
         }
 
         [HttpGet]
@@ -24,9 +25,9 @@ namespace SVChVS_Course_Project.Controllers
         {
             try
             {
-                var matchs = await _matchService.GetAllAsync();
+                var clubs = await _clubService.GetAll();
 
-                return Ok(matchs);
+                return Ok(clubs);
             }
             catch (Exception e)
             {
@@ -37,18 +38,18 @@ namespace SVChVS_Course_Project.Controllers
         [HttpPost]
         [Route("[controller]/create")]
         [ProducesResponseType(typeof(Match), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Create([FromBody] Match matchForCreate)
+        public async Task<IActionResult> Create([FromBody] Match clubForCreate)
         {
             try
             {
-                if (matchForCreate is null || !ModelState.IsValid)
+                if (clubForCreate is null || !ModelState.IsValid)
                 {
                     return BadRequest("Модель не подходит");
                 }
 
-                var result = await _matchService.Create(matchForCreate);
+                var result = await _clubService.Create(clubForCreate);
 
-                return Ok(matchForCreate);
+                return Ok(clubForCreate);
             }
             catch (Exception e)
             {
@@ -59,16 +60,16 @@ namespace SVChVS_Course_Project.Controllers
         [HttpPut]
         [Route("[controller]/update")]
         [ProducesResponseType(typeof(Match), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Update([FromBody] Match matchForUpdate)
+        public async Task<IActionResult> Update([FromBody] Match clubForUpdate)
         {
             try
             {
-                if (matchForUpdate is null || !ModelState.IsValid)
+                if (clubForUpdate is null || !ModelState.IsValid)
                 {
                     return BadRequest("Модель не подходит");
                 }
 
-                var result = await _matchService.Update(matchForUpdate);
+                var result = await _clubService.Update(clubForUpdate);
 
                 return Ok(result);
             }
@@ -85,7 +86,7 @@ namespace SVChVS_Course_Project.Controllers
         {
             try
             {
-                await _matchService.Remove(ID);
+                await _clubService.Delete(ID);
 
                 return Ok(ID);
             }
@@ -96,42 +97,20 @@ namespace SVChVS_Course_Project.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/get-by-result")]
+        [Route("[controller]/get-by-team")]
         [ProducesResponseType(typeof(List<Match>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByResultAsync(string result)
+        public async Task<IActionResult> GetByTeam(string team)
         {
             try
             {
-                var matchs = await _matchService.GetByResultAsync(result);
+                var clubs = await _clubService.GetByTeamPlayedAsync(team);
 
-                if (matchs is null)
+                if (clubs is null)
                 {
                     return NotFound();
                 }
 
-                return Ok(matchs);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, $"{e.Message}");
-            }
-        }
-
-        [HttpGet]
-        [Route("[controller]/get-by-team-played")]
-        [ProducesResponseType(typeof(List<Match>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByTeamPlayed(string teamPlayed)
-        {
-            try
-            {
-                var matchs = await _matchService.GetByTeamPlayedAsync(teamPlayed);
-
-                if (matchs is null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(matchs);
+                return Ok(clubs);
             }
             catch (Exception e)
             {

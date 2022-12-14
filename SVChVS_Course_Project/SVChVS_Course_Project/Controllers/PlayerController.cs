@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SVChVS_Course_Project.Services.PlayersServices;
+using SVChVS_Course_Project.Models;
+using SVChVS_Course_Project.Services.PlayerServices;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace SVChVS_Course_Project.Controllers
         {
             try
             {
-                var players = await _playerService.GetAllAsync();
+                var players = await _playerService.GetAll();
 
                 return Ok(players);
             }
@@ -78,6 +79,23 @@ namespace SVChVS_Course_Project.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("[controller]/get-by-last-name")]
+        [ProducesResponseType(typeof(Player), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByLastName([FromBody] string lastName)
+        {
+            try
+            {
+                var player = await _playerService.GetByLastNameAsync(lastName);
+
+                return Ok(player);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, $"{e.Message}");
+            }
+        }
+
         [HttpDelete]
         [Route("[controller]/delete")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
@@ -85,31 +103,9 @@ namespace SVChVS_Course_Project.Controllers
         {
             try
             {
-                await _playerService.Remove(ID);
+                await _playerService.Delete(ID);
 
                 return Ok(ID);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, $"{e.Message}");
-            }
-        }
-
-        [HttpGet]
-        [Route("[controller]/get-by-last-name")]
-        [ProducesResponseType(typeof(List<Player>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByLastNameAsync(string lastName)
-        {
-            try
-            {
-                var players = await _playerService.GetByLastNameAsync(lastName);
-
-                if (players is null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(players);
             }
             catch (Exception e)
             {

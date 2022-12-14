@@ -1,10 +1,10 @@
 ﻿#nullable disable
 
-namespace SVChVS_Course_Project
+namespace SVChVS_Course_Project.Models
 {
     public partial class TransferList
     {
-        public string ID { get; set; }
+        public string Id { get; set; }
         public string PlayerName { get; set; }
         public string FromTeam { get; set; }
         public string ToTeam { get; set; }
