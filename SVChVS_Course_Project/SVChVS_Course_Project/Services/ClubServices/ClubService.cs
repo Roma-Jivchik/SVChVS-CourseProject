@@ -50,7 +50,7 @@ namespace SVChVS_Course_Project.Services.ClubServices
         {
             return await courseProjectContext.Clubs
                 .Where(_ => _.League == league)
-                .OrderBy(_ => _.Name)
+                .OrderBy(_ => _.Place)
                 .ToListAsync();
         }
 

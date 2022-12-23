@@ -1,49 +1,67 @@
 import React, { Component } from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Card from 'react-bootstrap/Card';
 import './NavMenu.css';
 
 export class NavMenu extends Component {
-  static displayName = NavMenu.name;
+    static displayName = NavMenu.name;
 
-  constructor (props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.toggleNavbar = this.toggleNavbar.bind(this);
-    this.state = {
-      collapsed: true
-    };
-  }
+        this.toggleNavbar = this.toggleNavbar.bind(this);
+        this.state = {
+            collapsed: true,
+            isHidden: true,
+        };
+    }
 
-  toggleNavbar () {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  }
+    toggleNavbar() {
+        this.setState({
+            collapsed: !this.state.collapsed
+        });
+    }
 
-  render () {
-    return (
-      <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
-          <Container>
-            <NavbarBrand tag={Link} to="/">SVChVS_Course_Project</NavbarBrand>
-            <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-            <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-              <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                </NavItem>
-              </ul>
-            </Collapse>
-          </Container>
-        </Navbar>
-      </header>
-    );
-  }
+    render() {
+        return (
+            <div>
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+                <Navbar.Brand style={{ paddingLeft: 10 }} href="/">Football news</Navbar.Brand>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="mr-auto">
+                        <NavDropdown title="Команды" id="navbarScrollingDropdown">
+                            <NavDropdown.Item href="/Clubs">Просмотр всех команд</NavDropdown.Item>
+                            <NavDropdown.Item href="/ClubsByLeague">Поиск команд по турниру</NavDropdown.Item>
+                        </NavDropdown>
+                        <NavDropdown title="Трансферный рынок" id="navbarScrollingDropdown">
+                                <NavDropdown.Item href="/TransferLists">Просмотр трансферов</NavDropdown.Item>
+                                <NavDropdown.Item href="/TransferListsByTeam">Поиск трансферов команды</NavDropdown.Item>
+                            </NavDropdown>
+                         <NavDropdown title="Матчи" id="navbarScrollingDropdown">
+                                <NavDropdown.Item href="/Matches">Просмотр матчей</NavDropdown.Item>
+                                <NavDropdown.Item href="/MatchesByTeamView">Поиск матчей по играющей в нем команде</NavDropdown.Item>
+                            </NavDropdown>
+                         <NavDropdown title="Игроки" id="navbarScrollingDropdown">
+                                <NavDropdown.Item href="/Players">Просмотр игроков</NavDropdown.Item>
+                                <NavDropdown.Item href="/PlayersByTeamView">Поиск игроков по команде</NavDropdown.Item>
+                                <NavDropdown.Item href="/PlayersByPositionView">Поиск игроков по позиции</NavDropdown.Item>
+                         </NavDropdown>
+                    </Nav>
+                    <Nav style=
+                        {{
+                        marginLeft: "auto",
+                        paddingRight:40
+                        }}>
+                        <Nav.Link style={{ float: "right" }} href="/">На главную</Nav.Link>
+                        <Nav.Link style={{ float: "right" }} href="/logout">Выйти</Nav.Link>
+                        <Nav.Link style={{ float: "right" }} href="/">О нас</Nav.Link>
+                    </Nav>
+                </Navbar.Collapse>
+                </Navbar>
+            </div>
+        );
+    }
 }

@@ -96,32 +96,10 @@ namespace SVChVS_Course_Project.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("[controller]/get-by-team")]
         [ProducesResponseType(typeof(List<TransferList>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByPlayerAsync(string player)
-        {
-            try
-            {
-                var transferLists = await _transferListService.GetByPlayerAsync(player);
-
-                if (transferLists is null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(transferLists);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, $"{e.Message}");
-            }
-        }
-
-        [HttpGet]
-        [Route("[controller]/get-by-team")]
-        [ProducesResponseType(typeof(List<TransferList>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByTeamAsync(string team)
+        public async Task<IActionResult> GetByTeamAsync([FromBody] string team)
         {
             try
             {

@@ -46,14 +46,6 @@ namespace SVChVS_Course_Project.Services.TransferListServices
                 .ToListAsync();
         }
 
-        public async Task<List<TransferList>> GetByPlayerAsync(string playerName)
-        {
-            return await courseProjectContext.TransferLists
-                .Where(_ => _.PlayerName == playerName)
-                .OrderBy(_ => _.Price)
-                .ToListAsync();
-        }
-
         public async Task<List<TransferList>> GetByTeamAsync(string team)
         {
             return await courseProjectContext.TransferLists

@@ -96,10 +96,10 @@ namespace SVChVS_Course_Project.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("[controller]/get-by-league")]
         [ProducesResponseType(typeof(List<Club>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByLeague(string league)
+        public async Task<IActionResult> GetByLeague([FromBody] string league)
         {
             try
             {

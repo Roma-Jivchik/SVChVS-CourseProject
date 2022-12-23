@@ -79,23 +79,6 @@ namespace SVChVS_Course_Project.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("[controller]/get-by-last-name")]
-        [ProducesResponseType(typeof(Player), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByLastName([FromBody] string lastName)
-        {
-            try
-            {
-                var player = await _playerService.GetByLastNameAsync(lastName);
-
-                return Ok(player);
-            }
-            catch(Exception e)
-            {
-                return StatusCode(500, $"{e.Message}");
-            }
-        }
-
         [HttpDelete]
         [Route("[controller]/delete")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
@@ -113,10 +96,10 @@ namespace SVChVS_Course_Project.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("[controller]/get-by-team")]
         [ProducesResponseType(typeof(List<Player>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByTeamAsync(string team)
+        public async Task<IActionResult> GetByTeamAsync([FromBody] string team)
         {
             try
             {
@@ -135,10 +118,10 @@ namespace SVChVS_Course_Project.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("[controller]/get-by-position")]
         [ProducesResponseType(typeof(List<Player>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByPositionAsync(string position)
+        public async Task<IActionResult> GetByPositionAsync([FromBody] string position)
         {
             try
             {

@@ -96,10 +96,10 @@ namespace SVChVS_Course_Project.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("[controller]/get-by-team")]
         [ProducesResponseType(typeof(List<Match>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByTeam(string team)
+        public async Task<IActionResult> GetByTeam([FromBody] string team)
         {
             try
             {

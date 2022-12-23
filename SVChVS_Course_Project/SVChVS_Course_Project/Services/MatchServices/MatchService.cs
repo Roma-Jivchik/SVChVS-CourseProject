@@ -51,7 +51,7 @@ namespace SVChVS_Course_Project.Services.MatchServices
         {
             return await courseProjectContext.Matches
                 .Where(_ => _.FirstTeamPlayed == teamPlayed || _.SecondTeamPlayed == teamPlayed)
-                .OrderBy(_ => _.Result)
+                .OrderBy(_ => _.FirstTeamPlayed)
                 .ToListAsync();
         }
 
